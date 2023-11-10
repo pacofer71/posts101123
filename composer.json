@@ -1,0 +1,22 @@
+{
+    "name": "pacof/posts071123",
+    "description": "Crud de dos tablas",
+    "type": "project",
+    "license": "gnu/gpl",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pacofer71",
+            "email": "pacofer71@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "fakerphp/faker": "^1.23",
+        "mmo/faker-images": "^0.9.0"
+    }
+}
