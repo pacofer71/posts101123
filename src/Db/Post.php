@@ -32,17 +32,32 @@ class Post extends Conexion{
         parent::$conexion=null;
     }
 
-    public static function readAll(){
+    public static function readAll(?int $id=null){
         parent::setConexion();
-        $q="select posts.*, email from users, posts where users.id=posts.user order by posts.id desc";
+        $q=($id==null) ?
+        "select posts.*, email from users, posts where users.id=posts.user order by posts.id desc" :
+        "select posts.*, email from users, posts where users.id=posts.user AND users.id=:i order by posts.id desc";
         $stmt=parent::$conexion->prepare($q);
         try{
-            $stmt->execute();
+            ($id==null) ? $stmt->execute() : $stmt->execute([':i'=>$id]);
         }catch(PDOException $ex){
             die("error en readAll: ".$ex->getMessage());
         }
         parent::$conexion=null;
         return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public static function detalle(int $id){
+        parent::setConexion();
+        $q="select posts.*, email from users, posts where users.id=posts.user AND posts.id=:i order by posts.id desc";
+        $stmt=parent::$conexion->prepare($q);
+        try{
+            $stmt->execute([':i'=>$id]);
+        }catch(PDOException $ex){
+            die("error en detalle: ".$ex->getMessage());
+        }
+        parent::$conexion=null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     //_________________________________________________ FAKER ___________

@@ -31,7 +31,7 @@ class User extends Conexion{
         parent::$conexion=null;
     }
     //---------------------------------------------- OTROS METODOS ----------
-    public static function login(string $email, $password){
+    public static function login(string $email, string $password){
         parent::setConexion();
         $q="select id, isAdmin, password from users where email=:e";
         $stmt=parent::$conexion->prepare($q);
@@ -42,7 +42,7 @@ class User extends Conexion{
         }
         parent::$conexion=null;
         $datos=$stmt->fetch(PDO::FETCH_OBJ);
-        if(!$datos) return false;
+        if(!$datos) return false; 
         //ok el correo existe vamos a ver si el pass es correcto
         if(!password_verify($password, $datos->password)){
             //el correo era valido pero NO el password

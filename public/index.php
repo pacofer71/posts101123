@@ -37,12 +37,14 @@ use App\Db\User;
     <?php
     foreach($posts as $item){
         echo <<< TXT
+        <a href="./posts/detalle.php?id={$item->id}">
         <article class="h-80 w-full" style="background-image:url('./{$item->imagen}')">
           <div class="flex flex-col justify-around h-full">
             <div class="w-full text-center text-2xl font-semibold">{$item->titulo}</div>
             <div class='w-full text-center italic text-lg'>{$item->email}</div>
           </div>
         </article>
+        </a>
         TXT;
     }
     ?>
