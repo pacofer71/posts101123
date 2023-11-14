@@ -32,6 +32,23 @@ class Post extends Conexion{
         parent::$conexion=null;
     }
 
+    public function update(int $id){
+        $q="update posts set titulo=:t, descripcion=:d, imagen=:i, user=:u where id=:id";
+        $stmt=parent::$conexion->prepare($q);
+        try{
+            $stmt->execute([
+                ':t'=>$this->titulo,
+                ':d'=>$this->descripcion,
+                ':i'=>$this->imagen,
+                ':u'=>$this->user,
+                ':id'=>$id
+            ]);
+        }catch(PDOException $ex){
+            die("Error en update: ".$ex->getMessage());
+        }
+        parent::$conexion=null;
+    }
+
     public static function readAll(?int $id=null){
         parent::setConexion();
         $q=($id==null) ?
@@ -47,17 +64,34 @@ class Post extends Conexion{
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public static function detalle(int $id){
+    public static function detalle(int $idPost, int $idUser=null){
         parent::setConexion();
-        $q="select posts.*, email from users, posts where users.id=posts.user AND posts.id=:i order by posts.id desc";
+        $q=($idUser==null) ? "select posts.*, email from users, posts where users.id=posts.user AND posts.id=:idP"
+        : "select * from posts where id=:idP AND user=:idU ";
+
+        $opciones=($idUser==null) ? [':idP'=>$idPost] : [':idP'=>$idPost, ':idU'=>$idUser];
+
         $stmt=parent::$conexion->prepare($q);
         try{
-            $stmt->execute([':i'=>$id]);
+            $stmt->execute($opciones);
         }catch(PDOException $ex){
             die("error en detalle: ".$ex->getMessage());
         }
         parent::$conexion=null;
         return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public static function delete(int $id){
+        parent::setConexion();
+        $q="delete from posts where id=:i";
+        $stmt=parent::$conexion->prepare($q);
+        try{
+            $stmt->execute([':i'=>$id]);
+        }catch(PDOException $ex){
+            die("error en borrar: ".$ex->getMessage());
+        }
+        parent::$conexion=null;
+
     }
 
     //_________________________________________________ FAKER ___________

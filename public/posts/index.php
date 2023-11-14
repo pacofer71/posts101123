@@ -40,6 +40,11 @@ $posts = Post::readAll($id); //solo me devolverá los posts del usuario logeado
   </ul>
   <!-- FIN NAVB BAR -->
   <h3 class="text-xl text-center my-2">Posts de : <?php echo $email ?></h3>
+  <div class="w-3/4 mx-auto flex flex-row-reverse my-2">
+    <a href="nuevo.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      <i class="fas fa-add"></i> NUEVO
+    </a>
+  </div>
   <!-- Tabla POSTS-->
   <div class="w-3/4 mx-auto">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -74,11 +79,14 @@ $posts = Post::readAll($id); //solo me devolverá los posts del usuario logeado
             <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
               {$item->descripcion}
             </td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4 whitespace-nowrap">
               <form action="borrar.php" method="POST">
               <input type="hidden" name="id" value="{$item->id}" />
               <a href="detalle.php?id={$item->id}"><i class="fas fa-info"></i><a>
-              <button type="submit"><i class="fas fa-trash ml-2"></i></button>
+              <a href="update.php?id={$item->id}"><i class="mx-2
+              
+              fas fa-edit"></i></a>
+              <button type="submit"><i class="fas fa-trash"></i></button>
               </form>
             </td>
           </tr>
@@ -90,6 +98,21 @@ $posts = Post::readAll($id); //solo me devolverá los posts del usuario logeado
     </div>
   </div>
   <!-- FIN TABLA POSTS -->
+  <?php
+  if (isset($_SESSION['mensaje'])) {
+    echo <<<TXT
+      <script>
+      Swal.fire({
+        icon: "success",
+        title: "{$_SESSION['mensaje']}",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      </script>
+      TXT;
+    unset($_SESSION['mensaje']);
+  }
+  ?>
 </body>
 
 </html>
