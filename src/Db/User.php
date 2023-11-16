@@ -52,6 +52,20 @@ class User extends Conexion{
         return $datos;
     }
 
+    public static function existeEmail(string $email):bool{
+        parent::setConexion();
+        $q="select id from users where email=:e";
+        $stmt=parent::$conexion->prepare($q);
+        try{
+            $stmt->execute([':e'=>$email]);
+        }catch(PDOException $ex){
+            die("error en existeEmail: ".$ex->getMessage());
+        }
+        parent::$conexion=null;
+        return $stmt->rowCount();
+
+    }
+
     //---------------------------------------------- FAKER ------------------
     private static function hayUsuarios():bool{
         parent::setConexion();
@@ -82,12 +96,12 @@ class User extends Conexion{
         }
     }
     //devolveremos un array con todos los id de los usuarios para el faker de posts
-    public static function devolverUserId(): array{
+    public static function devolverUserId(string $email=null): array{
         parent::setConexion();
-        $q="select id from users";
+        $q=($email==null) ? "select id from users" : "select id from users where email=:e";
         $stmt=parent::$conexion->prepare($q);
         try{
-            $stmt->execute();
+           ($email==null) ? $stmt->execute() : $stmt->execute([':e'=>$email]);
         }catch(PDOException $ex){
             die("error en devolver ids de user: ".$ex->getMessage());
         }
