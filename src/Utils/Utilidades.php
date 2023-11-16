@@ -56,4 +56,16 @@ class Utilidades{
         }
     }
 
+    public static function pintarNavBar(array $options){ // [[r, t, i], [r, t, i], [r, t, i]]
+        echo "<ul class='flex flex-row-reverse mt-4 w-3/4 mx-auto'>";
+        foreach($options as $item){
+            echo <<<TXT
+            <li class="mr-6">
+            <a class="text-blue-500 hover:text-blue-800" href="{$item[0]}"><i class="{$item[2]}"></i> {$item[1]}</a>
+            </li>
+            TXT;
+        }
+        echo "</ul>";
+    }
+
 }

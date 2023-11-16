@@ -1,7 +1,8 @@
 <?php
-
+session_start();
 use App\Db\Post;
 use App\Db\User;
+use App\Utils\Utilidades;
 
     require_once __DIR__."/../vendor/autoload.php";
     User::generarUsuarios(15);
@@ -24,14 +25,23 @@ use App\Db\User;
 </head>
 
 <body style="background-color:blanchedalmond">
-<ul class="flex flex-row-reverse mt-4 w-3/4 mx-auto">
-  <li class="mr-6">
-    <a class="text-blue-500 hover:text-blue-800" href="login.php">LOGIN</a>
-  </li>
-  <li class="mr-6">
-    <a class="text-blue-500 hover:text-blue-800" href="./users/register.php">REGISTRASE</a>
-  </li>
-</ul>
+<!-- NAV BAR -->
+<?php
+  if(isset($_SESSION['email'])){
+    $opciones=[
+      ['./posts/index.php', 'Mis Posts', 'fa-regular fa-newspaper'],
+      ['./posts/logout.php', 'Cerrar Sesion', 'fa-solid fa-arrow-right-from-bracket']
+    ];
+  }else{
+    $opciones=[
+      ["login.php", "Login", "fa-solid fa-arrow-right-to-bracket"],
+      ["./users/register.php", "Register", "fa-solid fa-user-plus"]
+    ];
+  }
+  Utilidades::pintarNavBar($opciones);
+?>
+
+<!-- FIN NAV BAR -->
 <h3 class="text-xl text-center my-2">POSTS Al-ANDALUS</h3>
 <div class="grid grid-cols-3 gap-2 mx-auto w-3/4">
     <?php

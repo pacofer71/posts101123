@@ -3,6 +3,9 @@
 use App\Db\Post;
 
 session_start();
+
+
+
 if (!isset($_SESSION['email'])) {
   header("Location:../index.php");
   die();
@@ -45,6 +48,9 @@ $posts = Post::readAll($id); //solo me devolverá los posts del usuario logeado
       <i class="fas fa-add"></i> NUEVO
     </a>
   </div>
+  <?php
+    if($posts){ 
+  ?>
   <!-- Tabla POSTS-->
   <div class="w-3/4 mx-auto">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -98,6 +104,13 @@ $posts = Post::readAll($id); //solo me devolverá los posts del usuario logeado
     </div>
   </div>
   <!-- FIN TABLA POSTS -->
+  <?php
+    }else{
+      echo "<p class='w-3/4 mx-auto px-4 py-3 rounded-xl text-lg shadow-xl border-4 border-color-blue-800 text-white bg-black'>
+      Aun no ha creado ningun post, aproveche para crear el primero.
+      </p>";
+    }
+  ?>
   <?php
   if (isset($_SESSION['mensaje'])) {
     echo <<<TXT
